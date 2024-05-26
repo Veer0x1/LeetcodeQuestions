@@ -7,6 +7,7 @@ import {
     CrossCircledIcon,
     QuestionMarkCircledIcon,
     StopwatchIcon,
+    Half2Icon,
 } from "@radix-ui/react-icons";
 
 export const labels = [
@@ -67,3 +68,40 @@ export const priorities = [
         icon: ArrowUpIcon,
     },
 ];
+
+export const questionStatus = [
+    {
+        label: "Attempted",
+        value: 'attempted',
+        icons: Half2Icon
+    },
+    {
+        label: "Wrong Answer",
+        value: "wrong_answer",
+        icons: CrossCircledIcon,
+    },
+    {
+        label: "Accepted",
+        value: "accepted",
+        icon: CheckCircledIcon
+    }
+]
+
+export const questionDificulty = [
+    {
+        label: "Easy",
+        value: "Easy",
+        icon: ArrowDownIcon,
+
+    },
+    {
+        label: "Medium",
+        value: "Medium",
+        icon: ArrowRightIcon,
+    },
+    {
+        label: "Hard",
+        value: "Hard",
+        icon: ArrowUpIcon,
+    },
+]

@@ -6,8 +6,12 @@ import { z } from "zod"
 
 import { columns } from "./components/columns"
 import { DataTable } from "./components/data-table"
+import { QuestionsTable } from "@/app/questions/components/questions-table";
 import { UserNav } from "./components/user-nav"
 import { questionSchema } from "./data/schema"
+
+import { createClient } from '@/utils/supabase/server'
+import { log } from "console"
 
 export const metadata: Metadata = {
   title: "Tasks",
@@ -25,8 +29,14 @@ async function getTasks() {
   return z.array(questionSchema).parse(tasks)
 }
 
+
 export default async function TaskPage() {
-  const tasks = await getTasks()
+  // const tasks = await getTasks()
+  const supabase = createClient()
+  const { data: questions } = await supabase.from('alltime_interview_questions').select('*');
+
+  // log(questions);
+
 
   return (
     <>
@@ -51,14 +61,14 @@ export default async function TaskPage() {
           <div>
             <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
             <p className="text-muted-foreground">
-              Here&apos;s a list of your tasks for this month!
+              Here&apos;s a list of questions asked by companies
             </p>
           </div>
           <div className="flex items-center space-x-2">
             <UserNav />
           </div>
         </div>
-        <DataTable data={tasks} columns={columns} />
+        <QuestionsTable data={questions} columns={columns} />
       </div>
     </>
   )
