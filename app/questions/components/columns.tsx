@@ -9,6 +9,7 @@ import {labels, priorities, questionDificulty, statuses} from "../data/data"
 import { Task } from "../data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
+import Link from "next/link";
 
 export const columns: ColumnDef<Task>[] = [
     {
@@ -35,15 +36,6 @@ export const columns: ColumnDef<Task>[] = [
         enableSorting: false,
         enableHiding: false,
     },
-    // {
-    //     accessorKey: "id",
-    //     header: ({ column }) => (
-    //         <DataTableColumnHeader column={column} title="Task" />
-    //     ),
-    //     cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
-    //     enableSorting: false,
-    //     enableHiding: false,
-    // },
     {
         accessorKey: "ID",
         header: ({ column }) => (
@@ -60,44 +52,21 @@ export const columns: ColumnDef<Task>[] = [
         ),
         cell: ({ row }) => {
             // const label = labels.find((label) => label.value === row.original.label)
+            let link:string = row.original.LeetcodeQuestionLink
 
             return (
                 <div className="flex space-x-2">
                     {/*{label && <Badge variant="outline">{label.label}</Badge>}*/}
-                    <span className="max-w-[500px] truncate font-medium">
+
+                    <Link href={link} target={'_blank'}>
+                    <span className="max-w-[500px] truncate font-medium hover:text-muted-foreground">
                         {row.getValue("Title")}
                     </span>
+                </Link>
                 </div>
             )
         },
     },
-    // {
-    //     accessorKey: "status",
-    //     header: ({ column }) => (
-    //         <DataTableColumnHeader column={column} title="Status" />
-    //     ),
-    //     cell: ({ row }) => {
-    //         const status = statuses.find(
-    //             (status) => status.value === row.getValue("status")
-    //         )
-    //
-    //         if (!status) {
-    //             return null
-    //         }
-    //
-    //         return (
-    //             <div className="flex w-[100px] items-center">
-    //                 {status.icon && (
-    //                     <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-    //                 )}
-    //                 <span>{status.label}</span>
-    //             </div>
-    //         )
-    //     },
-    //     filterFn: (row, id, value) => {
-    //         return value.includes(row.getValue(id))
-    //     },
-    // },
     {
         accessorKey: "Company",
         header: ({ column }) => (
@@ -125,13 +94,17 @@ export const columns: ColumnDef<Task>[] = [
             if (!priority) {
                 return null
             }
+            const colorMap: { [key: string]: string } = {
+                'Medium': 'text-yellow-500',
+                'Hard': 'text-red-500',
+                'Easy': 'text-green-500',
+            };
 
+            let color = colorMap[priority.label];
             return (
                 <div className="flex items-center">
-                    {priority.icon && (
-                        <priority.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                    )}
-                    <span>{priority.label}</span>
+
+                    <span className={color}>{priority.label}</span>
                 </div>
             )
         },
@@ -139,8 +112,4 @@ export const columns: ColumnDef<Task>[] = [
             return value.includes(row.getValue(id))
         },
     },
-    // {
-    //     id: "actions",
-    //     cell: ({ row }) => <DataTableRowActions row={row} />,
-    // },
 ]

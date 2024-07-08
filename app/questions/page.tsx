@@ -1,42 +1,28 @@
-import { promises as fs } from "fs"
-import path from "path"
-import { Metadata } from "next"
-import Image from "next/image"
-import { z } from "zod"
+import { promises as fs } from "fs";
+import path from "path";
+import { Metadata } from "next";
+import Image from "next/image";
+import { z } from "zod";
 
-import { columns } from "./components/columns"
-import { DataTable } from "./components/data-table"
+import { columns } from "./components/columns";
+import { DataTable } from "./components/data-table";
 import { QuestionsTable } from "@/app/questions/components/questions-table";
-import { UserNav } from "./components/user-nav"
-import { questionSchema } from "./data/schema"
+import { UserNav } from "./components/user-nav";
+import { questionSchema } from "./data/schema";
 
-import { createClient } from '@/utils/supabase/server'
-import { log } from "console"
+import { createClient } from "@/utils/supabase/server";
+import { log } from "console";
 
 export const metadata: Metadata = {
   title: "Tasks",
   description: "A task and issue tracker build using Tanstack Table.",
-}
-
-// Simulate a database read for tasks.
-async function getTasks() {
-  const data = await fs.readFile(
-    path.join(process.cwd(), "app/questions/data/tasks.json")
-  )
-
-  const tasks = JSON.parse(data.toString())
-
-  return z.array(questionSchema).parse(tasks)
-}
-
+};
 
 export default async function TaskPage() {
-  // const tasks = await getTasks()
-  const supabase = createClient()
-  const { data: questions } = await supabase.from('alltime_interview_questions').select('*');
-
-  // log(questions);
-
+  const supabase = createClient();
+  const { data: questions } = await supabase
+    .from("alltime_interview_questions")
+    .select("*");
 
   return (
     <>
@@ -71,5 +57,6 @@ export default async function TaskPage() {
         <QuestionsTable data={questions} columns={columns} />
       </div>
     </>
-  )
+  );
 }
+
